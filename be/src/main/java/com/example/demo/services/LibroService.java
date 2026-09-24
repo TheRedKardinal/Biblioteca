@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,6 +38,8 @@ public class LibroService {
             "isbn", "isbn",
             "genere", "genere.nome");
 
+    private static final int BLOCCO_ISBN = 1000;
+
     private final LibroRepository libroRepository;
     private final GenereRepository genereRepository;
 
@@ -49,6 +54,19 @@ public class LibroService {
         Sort sort = SearchUtils.traduciSort(pageable.getSort(), SORT_CONSENTITI, Sort.by("titolo"));
         Pageable richiesta = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         return PageResponse.of(libroRepository.findAll(LibroSpecifications.da(params), richiesta).map(LibroResponse::of));
+    }
+
+    // Solo i libri posseduti: gli ISBN sconosciuti vengono ignorati. A blocchi da 1000
+    // per non mandare a Postgres una IN con migliaia di parametri in una volta sola.
+    @Transactional(readOnly = true)
+    public List<LibroResponse> perIsbn(List<BigDecimal> isbn) {
+        List<BigDecimal> distinti = isbn.stream().distinct().toList();
+        List<LibroResponse> trovati = new ArrayList<>();
+        for (int i = 0; i < distinti.size(); i += BLOCCO_ISBN) {
+            List<BigDecimal> blocco = distinti.subList(i, Math.min(i + BLOCCO_ISBN, distinti.size()));
+            libroRepository.findByIsbnIn(blocco).forEach(l -> trovati.add(LibroResponse.of(l)));
+        }
+        return trovati;
     }
 
     public record EsitoNuovoLibro(boolean creato, LibroOperazioneResponse risposta) {

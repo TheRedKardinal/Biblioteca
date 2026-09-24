@@ -12,12 +12,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface LibroRepository extends JpaRepository<Libro, UUID>, JpaSpecificationExecutor<Libro> {
 
     Optional<Libro> findByIsbn(BigDecimal isbn);
+
+    @EntityGraph(attributePaths = "genere")
+    List<Libro> findByIsbnIn(Collection<BigDecimal> isbn);
 
     // Genere caricato nella stessa query (JOIN), niente N+1
     @Override

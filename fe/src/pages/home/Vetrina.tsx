@@ -31,13 +31,13 @@ export function Vetrina() {
     const ctrl = new AbortController()
     const pagina = 1 + Math.floor(Math.random() * PAGINE_POSSIBILI)
     cercaLibri({
-      q: 'subject:fiction',
+      q: 'subject:fiction cover_i:[1 TO *]',
       ordinamento: 'readinglog',
       pagina,
       perPagina: PER_RIPIANO * RIPIANI + 4, // margine per i risultati scartati dal filtro
       signal: ctrl.signal,
     })
-      .then((p) => setLibri(p.libri.slice(0, PER_RIPIANO * RIPIANI)))
+      .then((p) => setLibri(p.libri.filter((l) => l.copertinaId).slice(0, PER_RIPIANO * RIPIANI)))
       .catch((e) => {
         if (!ctrl.signal.aborted) {
           console.warn(e)
@@ -106,7 +106,7 @@ function Copertina({ libro }: { libro: LibroOL }) {
         className={styles.copertina}
       >
         <img
-          src={urlCopertina(libro.copertinaId, 'M')}
+          src={urlCopertina(libro.copertinaId!, 'M')}
           alt={`${libro.titolo}, di ${autore}`}
           decoding="async"
           onLoad={() => setCaricata(true)}

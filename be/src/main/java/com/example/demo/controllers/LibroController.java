@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/book")
 @RequiredArgsConstructor
@@ -37,6 +39,14 @@ public class LibroController {
     @PatchMapping("/addLibro")
     public LibroOperazioneResponse addLibro(@Valid @RequestBody AggiungiCopieRequest request) {
         return libroService.aggiungiCopie(request.idLibro(), request.copie());
+    }
+
+    // Libri posseduti tra gli ISBN inviati (disponibilità nel catalogo Open Library del FE).
+    // POST perché la lista può contenere migliaia di ISBN: in query string non ci starebbe.
+    @PreAuthorize("permitAll()")
+    @PostMapping("/byIsbn")
+    public List<LibroResponse> byIsbn(@Valid @RequestBody IsbnRequest request) {
+        return libroService.perIsbn(request.isbn());
     }
 
     // Esempio: /search?q=tolkien&annoDa=1950&disponibile=true&sort=autore,asc&sort=prezzo,desc&page=0&size=10

@@ -1,0 +1,50 @@
+.contenuto {
+  position: relative;
+}
+
+.chiudi {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+}
+
+.griglia {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: var(--space-6);
+}
+
+.copertina {
+  width: 100%;
+  box-shadow:
+    0 1px 2px var(--black-a3),
+    0 16px 32px -12px var(--black-a6);
+}
+
+.titolo {
+  padding-right: var(--space-7);
+  font-family: var(--heading-font-family);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.descrizione {
+  max-height: 220px;
+}
+
+.testo {
+  padding-right: var(--space-3);
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+@media (max-width: 600px) {
+  .griglia {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .copertina {
+    width: 140px;
+  }
+}
