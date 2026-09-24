@@ -5,7 +5,7 @@ Scheletro di partenza, pronto per il deploy su Render.
 | Parte | Tecnologia | In locale | Su Render |
 |---|---|---|---|
 | Backend | Spring Boot 4.1.1, Java 25, Maven wrapper | `be` sulla 8080 | Web Service (Docker) |
-| Frontend | React 19, Vite, TypeScript, Tailwind 4 | `fe` sulla 5173 | Static Site |
+| Frontend | React 19, Vite, TypeScript, CSS Modules | `fe` sulla 5173 | Static Site |
 | Database | PostgreSQL | locale sulla 5432 | Render PostgreSQL |
 
 ## Endpoint
