@@ -6,7 +6,7 @@ Scheletro di partenza, pronto per il deploy su Render.
 |---|---|---|---|
 | Backend | Spring Boot 4.1.1, Java 25, Maven wrapper | `be` sulla 8080 | Web Service (Docker) |
 | Frontend | React 19, Vite, TypeScript, Radix Themes, Motion, React Router, CSS Modules | `fe` sulla 5173 | Static Site |
-| Database | PostgreSQL | locale sulla 5432 | Render PostgreSQL |
+| Database | PostgreSQL | locale sulla 5432 | Render PostgreSQL esistente, schema `biblioteca` |
 
 ## Endpoint
 
@@ -34,12 +34,15 @@ Scheletro di partenza, pronto per il deploy su Render.
 ## Deploy su Render
 
 1. Repository Git con `be/`, `fe/`, `render.yaml` nella radice.
-2. **New > Blueprint**, si sceglie la repo: nascono `app-db`, `app-be`, `app-fe`
-   (rinominarli in `render.yaml` prima del primo deploy).
+2. **New > Blueprint**, si sceglie la repo: nascono `app-be` e `app-fe`
+   (rinominarli in `render.yaml` prima del primo deploy). Il database non viene
+   creato: il piano free ne consente uno per account e si usa quello esistente,
+   con le tabelle nello schema `biblioteca` (`DB_SCHEMA`, creato al primo avvio).
 3. Dopo la prima build si impostano le variabili `sync: false` (URL senza `/` finale):
 
    | Servizio | Variabile | Valore |
    |---|---|---|
+   | `app-be` | `DATABASE_URL` | Internal Database URL del database esistente (External se in un'altra regione) |
    | `app-be` | `ALLOWED_ORIGIN` | `https://app-fe.onrender.com` |
    | `app-be` | `SUPERUSER_EMAIL` | email del SuperUser |
    | `app-be` | `SUPERUSER_PASSWORD` | password del SuperUser |
@@ -52,7 +55,7 @@ Scheletro di partenza, pronto per il deploy su Render.
 ## Struttura
 
 ```
-render.yaml                 blueprint: database + backend + frontend
+render.yaml                 blueprint: backend + frontend (database esistente)
 avvia.cmd                   avvio locale
 be/
   Dockerfile                usato solo da Render

@@ -1,13 +1,10 @@
-# Blueprint Render: database + backend + frontend.
+# Blueprint Render: backend + frontend.
 # Su Render: New > Blueprint > repository > Apply.
-# Rinominare app-db / app-be / app-fe con il nome del progetto.
-
-databases:
-  - name: app-db
-    databaseName: app
-    user: app
-    plan: free
-    region: frankfurt
+# Rinominare app-be / app-fe con il nome del progetto.
+#
+# Il database NON viene creato qui: il piano free ne consente uno solo per account
+# e si usa quello gia' esistente. Le tabelle stanno nello schema "biblioteca",
+# separate da quelle dell'altro progetto.
 
 services:
   # ---------- Backend: Spring Boot via Docker ----------
@@ -25,10 +22,13 @@ services:
         - be/**
         - render.yaml
     envVars:
+      # Connection string del database esistente (Internal Database URL se e' nella
+      # stessa regione del servizio, altrimenti External Database URL)
       - key: DATABASE_URL
-        fromDatabase:
-          name: app-db
-          property: connectionString
+        sync: false
+      # Schema dedicato: le tabelle non si mescolano con quelle dell'altro progetto
+      - key: DB_SCHEMA
+        value: biblioteca
       # Origine del FE per il CORS, es. https://app-fe.onrender.com
       - key: ALLOWED_ORIGIN
         sync: false
