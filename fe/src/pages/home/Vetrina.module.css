@@ -1,0 +1,124 @@
+.vetrina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 520px;
+  justify-self: center;
+}
+
+.etichetta {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--accent-11);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ripiano {
+  position: relative;
+}
+
+.libri {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  justify-items: center;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 var(--space-4);
+  list-style: none;
+}
+
+.slot {
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  aspect-ratio: 2 / 3;
+  border-radius: 3px var(--radius-2) var(--radius-2) 3px;
+}
+
+/* La mensola: una tavola sottile con un'ombra morbida sotto */
+.mensola {
+  height: 10px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gray-5), var(--gray-7));
+  box-shadow: 0 10px 18px -8px var(--black-a6);
+}
+
+.copertina {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 3px var(--radius-2) var(--radius-2) 3px;
+  background: var(--gray-a3);
+  box-shadow:
+    0 1px 2px var(--black-a3),
+    0 8px 16px -6px var(--black-a5);
+  transform-origin: bottom center;
+  transition:
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms ease;
+}
+
+/* Il dorso: una piega di luce sul lato sinistro, come una copertina vera */
+.copertina::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.18) 0,
+    rgb(255 255 255 / 0.18) 3px,
+    transparent 8px
+  );
+  pointer-events: none;
+}
+
+.copertina:hover,
+.copertina:focus-visible {
+  transform: translateY(-8px);
+  box-shadow:
+    0 1px 2px var(--black-a3),
+    0 18px 28px -10px var(--black-a6);
+}
+
+.copertina img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.copertina img[data-caricata='true'] {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .vetrina {
+    max-width: 440px;
+  }
+}
+
+@media (max-width: 520px) {
+  .libri {
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copertina {
+    transition: none;
+  }
+
+  .copertina:hover {
+    transform: none;
+  }
+}

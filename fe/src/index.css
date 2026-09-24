@@ -4,18 +4,56 @@
   box-sizing: border-box;
 }
 
-:root {
-  color-scheme: light dark;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  line-height: 1.5;
 }
 
-h1,
-p {
-  margin: 0;
+/* Token del progetto sopra le scale di Radix Colors */
+.radix-themes {
+  --default-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --heading-font-family: 'Fraunces', Georgia, serif;
+  --header-height: 64px;
+}
+
+/* Chiaro: un solo colore, JADE 9 (il piu' chiaro) */
+.light,
+.light-theme {
+  --brand: var(--jade-9);
+  --brand-testo: var(--jade-9);
+  --brand-soft: var(--jade-3);
+  --superficie: var(--jade-2);
+  --pagina: #ffffff;
+  --macchia: var(--jade-9);
+  --macchia-opacita: 0.18;
+}
+
+/* Scuro: un solo colore, JADE 4 (il piu' scuro) per le superfici.
+   Icone e testi evidenziati usano lo stesso tono ma piu' luminoso, altrimenti
+   su sfondo scuro non si leggerebbero. */
+.dark,
+.dark-theme {
+  --brand: var(--jade-11);
+  --brand-testo: var(--jade-11);
+  --brand-soft: var(--jade-4);
+  --superficie: var(--jade-4);
+  --pagina: var(--jade-2);
+  --macchia: var(--jade-4);
+  --macchia-opacita: 0.9;
+}
+
+html.light body {
+  background: #ffffff;
+}
+
+html.dark body {
+  background: #121c18;
+}
+
+.radix-themes {
+  background: var(--pagina);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-8);
+  outline-offset: 2px;
 }

@@ -5,7 +5,7 @@ Scheletro di partenza, pronto per il deploy su Render.
 | Parte | Tecnologia | In locale | Su Render |
 |---|---|---|---|
 | Backend | Spring Boot 4.1.1, Java 25, Maven wrapper | `be` sulla 8080 | Web Service (Docker) |
-| Frontend | React 19, Vite, TypeScript, CSS Modules | `fe` sulla 5173 | Static Site |
+| Frontend | React 19, Vite, TypeScript, Radix Themes, Motion, React Router, CSS Modules | `fe` sulla 5173 | Static Site |
 | Database | PostgreSQL | locale sulla 5432 | Render PostgreSQL |
 
 ## Endpoint
@@ -29,7 +29,7 @@ Scheletro di partenza, pronto per il deploy su Render.
    cd be && .\mvnw.cmd spring-boot:run
    cd fe && npm install && npm run dev
    ```
-3. http://localhost:5173 - il riquadro deve mostrare `biblioteca`.
+3. http://localhost:5173 - la home (copertine da Open Library, serve la rete).
 
 ## Deploy su Render
 
